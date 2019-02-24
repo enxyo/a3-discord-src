@@ -1,4 +1,5 @@
 const config = require('./cfg/config');
+const whitelist = require('./cfg/whitelist');
 
 /*******************************************
 ** DISCORD setup
@@ -10,6 +11,9 @@ const token = config.discord.token;
 
 // Set the prefix
 const prefix = ".";
+
+
+const wl = whitelist.start;
 
 /*******************************************
 ** DISCORD
@@ -30,6 +34,15 @@ client.on("message", (message) => {
 	if (command  === 'help') {
 		message.channel.send('**Dir ist nicht zu helfen**');
 	}
+
+    if (command === 'test') {
+        if(whitelist.start.includes(message.author.id) !== true) {
+		message.reply('Access denied!');
+		return;
+	    }
+
+        message.reply('Access granted!');
+    }
 });
 
 client.login(token);

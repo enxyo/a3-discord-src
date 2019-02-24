@@ -3,6 +3,10 @@
 
 # ignore config
 /cfg/config.js
+/cfg/whitelist.js
+/cfg/wl_data_start
+/cfg/wl_data_stop
+/cfg/wl_data_restart
 
 # Logs
 logs
