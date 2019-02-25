@@ -43,6 +43,51 @@ client.on("message", (message) => {
 
         message.reply('Access granted!');
     }
+
+    // server - syntax      .server start [type]
+    //                              stop
+    //                              restart
+    //                              status <details>
+    if (command === 'server') {
+        if (args[0] === undefined) {
+            message.reply('**Git gud!**\n```\n.server [start] <type>\n        [stop]\n        [restart]\n        [status]\n```');
+        }
+
+        if (args[0] === 'status') {
+            if (args[1] === 'details') {
+                const { exec } = require('child_process');
+                exec('ps -arma', (error, stdout, stderr) => {
+                    if (error) {
+                        console.log(`exec error: ${error}`);
+                        return;
+                    }
+
+                    if (stdout.indexOf('arma3server') != -1) {
+                        message.reply('Server running.');
+                        var s = stdout.slice(stdout.indexOf('arma3server'),stdout.length);
+                        var s1 = s.split(" ");
+                        // iterate over array to print
+                    } else {
+                        message.reply('Server not running.');
+                    }
+                });
+            } else {
+                const { exec } = require('child_process');
+                exec('ps -arma', (error, stdout, stderr) => {
+                    if (error) {
+                        console.log(`exec error: ${error}`);
+                        return;
+                    }
+
+                    if (stdout.indexOf('arma3server') != -1) {
+                        message.reply('Server running.');
+                    } else {
+                        message.reply('Server not running.');
+                    }
+                });
+            }
+        }
+    }
 });
 
 client.login(token);
