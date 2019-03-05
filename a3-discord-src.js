@@ -133,13 +133,45 @@ client.on("message", (message) => {
                 if(code == 0){
                     // exec startup script
                     const exec = require('child_process').exec;
-                    var script = exec('sh bottest.sh start', (error, stdout, stderr) => {
+                    var script = exec('sh bottest.sh start', { cwd: '/home/arma3server/' }, (error, stdout, stderr) => {
                         if (error) {
                             console.log(`exec error: ${error}`);
                             return;
                         }
                         console.log(`exec stout: ${stdout}`);
                         console.log(`exec sterr: ${stderr}`);
+                        message.reply('```' + stdout + '```')
+                    });
+                }
+            });
+
+        }
+
+        if (args[0] === 'stop') {
+            // check whitelist
+            if(whitelist.stop.includes(message.author.id) !== true) {
+    		          message.reply('Access denied!');
+    		return;
+    	    }
+
+            // check if server is running
+            serverProcessCheck(3)
+            .then(function (code) {
+                console.log(code);
+                if(code == 0){
+                    message.reply('Server is not running!')
+                }
+                if(code == 1){
+                    // exec startup script
+                    const exec = require('child_process').exec;
+                    var script = exec('sh bottest.sh stop', { cwd: '/home/arma3server/' }, (error, stdout, stderr) => {
+                        if (error) {
+                            console.log(`exec error: ${error}`);
+                            return;
+                        }
+                        console.log(`exec stout: ${stdout}`);
+                        console.log(`exec sterr: ${stderr}`);
+                        message.reply('```' + stdout + '```')
                     });
                 }
             });
