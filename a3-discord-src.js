@@ -178,6 +178,37 @@ client.on("message", (message) => {
 
         }
 
+        if (args[0] === 'restart') {
+            // check whitelist
+            if(whitelist.restart.includes(message.author.id) !== true) {
+    		          message.reply('Access denied!');
+    		return;
+    	    }
+
+            // check if server is running
+            serverProcessCheck(3)
+            .then(function (code) {
+                console.log(code);
+                if(code == 0){
+                    message.reply('Server is not running! Use start command.')
+                }
+                if(code == 1){
+                    // exec startup script
+                    const exec = require('child_process').exec;
+                    var script = exec('sh bottest.sh restart', { cwd: '/home/arma3server/' }, (error, stdout, stderr) => {
+                        if (error) {
+                            console.log(`exec error: ${error}`);
+                            return;
+                        }
+                        console.log(`exec stout: ${stdout}`);
+                        console.log(`exec sterr: ${stderr}`);
+                        message.reply('```' + stdout + '```')
+                    });
+                }
+            });
+
+        }
+
         if (args[0] === 'status') {
             if (args[1] === 'details') {
                 // 1 = full details / 0 = no details
