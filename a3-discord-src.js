@@ -1,6 +1,8 @@
 const config = require('./cfg/config');
 const whitelist = require('./cfg/whitelist');
 
+const q = require('q');
+
 /*******************************************
 ** DISCORD setup
 *******************************************/
@@ -14,6 +16,52 @@ const prefix = ".";
 
 
 const wl = whitelist.start;
+
+/*******************************************
+** FUNCTIONS
+*******************************************/
+
+function serverProcessCheck(details) {
+    var deferred = q.defer();
+
+    if (details == 1) {
+        const exec = require('child_process').exec;
+        var script = exec('ps -fC arma3server', (error, stdout, stderr) => {
+            if (error) {
+                var msg = 'Server not running.';
+                deferred.resolve(msg);
+            }
+            if (stdout.indexOf('arma3server') != -1) {
+                var msg = 'Server running.';
+
+                //var s = stdout.slice(stdout.indexOf('arma3server'),stdout.length);
+                //var s1 = s.split(" ");
+                deferred.resolve(msg);
+            }
+            //console.log(`exec stout: ${stdout}`);
+            //console.log(`exec sterr: ${stderr}`);
+        });
+    }
+
+    if (details == 0) {
+        const exec = require('child_process').exec;
+        var script = exec('ps -fC arma3server', (error, stdout, stderr) => {
+            if (error) {
+                var msg = 'Server not running.';
+                deferred.resolve(msg);
+            }
+            if (stdout.indexOf('arma3server') != -1) {
+                var msg = 'Server running.';
+                deferred.resolve(msg);
+            }
+            //console.log(`exec stout: ${stdout}`);
+            //console.log(`exec sterr: ${stderr}`);
+        });
+    }
+
+    return deferred.promise;
+}
+
 
 /*******************************************
 ** DISCORD
@@ -77,23 +125,18 @@ client.on("message", (message) => {
 
         if (args[0] === 'status') {
             if (args[1] === 'details') {
-                //var s = stdout.slice(stdout.indexOf('arma3server'),stdout.length);
-                //var s1 = s.split(" ");
-
+                // 1 = full details / 0 = no details
+                serverProcessCheck(1)
+                .then(function (msg) {
+                    console.log(msg);
+                    message.reply(msg);
+                });
             } else {
-                const exec = require('child_process').exec;
-                var script = exec('ps -fC arma3server', (error, stdout, stderr) => {
-                    if (error) {
-                        message.reply('Server not running.');
-                        return;
-                    }
-
-                    if (stdout.indexOf('arma3server') != -1) {
-                        message.reply('Server running.');
-                    }
-
-                    //console.log(`exec stout: ${stdout}`);
-                    //console.log(`exec sterr: ${stderr}`);
+                // 1 = full details / 0 = no details
+                serverProcessCheck(0)
+                .then(function (msg) {
+                    console.log(msg);
+                    message.reply(msg);
                 });
             }
         }
