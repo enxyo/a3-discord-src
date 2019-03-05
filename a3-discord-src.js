@@ -53,38 +53,33 @@ client.on("message", (message) => {
             message.reply('**Git gud!**\n```\n.server [start] <type>\n        [stop]\n        [restart]\n        [status]\n```');
         }
 
+        if (args[0] === 'start' && args[1] === 'liberation') {
+            // check whitelist
+            if(whitelist.start.includes(message.author.id) !== true) {
+    		          message.reply('Access denied!');
+    		return;
+    	    }
+
+            // check if server is running
+
+            // exec startup script
+            const exec = require('child_process').exec;
+            var script = exec('sh bottest.sh start', (error, stdout, stderr) => {
+                if (error) {
+                    console.log(`exec error: ${error}`);
+                    return;
+                }
+                console.log(`exec stout: ${stdout}`);
+                console.log(`exec sterr: ${stderr}`);
+            });
+
+        }
+
         if (args[0] === 'status') {
             if (args[1] === 'details') {
-                const { exec } = require('child_process');
-                exec('ps -arma', (error, stdout, stderr) => {
-                    if (error) {
-                        console.log(`exec error: ${error}`);
-                        return;
-                    }
 
-                    if (stdout.indexOf('arma3server') != -1) {
-                        message.reply('Server running.');
-                        var s = stdout.slice(stdout.indexOf('arma3server'),stdout.length);
-                        var s1 = s.split(" ");
-                        // iterate over array to print
-                    } else {
-                        message.reply('Server not running.');
-                    }
-                });
             } else {
-                const { exec } = require('child_process');
-                exec('ps -arma', (error, stdout, stderr) => {
-                    if (error) {
-                        console.log(`exec error: ${error}`);
-                        return;
-                    }
-
-                    if (stdout.indexOf('arma3server') != -1) {
-                        message.reply('Server running.');
-                    } else {
-                        message.reply('Server not running.');
-                    }
-                });
+                
             }
         }
     }
