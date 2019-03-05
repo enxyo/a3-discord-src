@@ -95,7 +95,7 @@ client.on("message", (message) => {
 	const command = args.shift().toLowerCase();
 
 	if (command  === 'help') {
-		message.channel.send('**Dir ist nicht zu helfen**');
+		message.channel.send('\n**Available commands**```.server start [type]  (1)\n        stop\n        restart\n        status <details>\n\n(1) available types: liberation```');
 	}
 
     if (command === 'test') {
@@ -133,7 +133,7 @@ client.on("message", (message) => {
                 if(code == 0){
                     // exec startup script
                     const exec = require('child_process').exec;
-                    var script = exec('sh bottest.sh start', { cwd: '/home/arma3server/' }, (error, stdout, stderr) => {
+                    var script = exec('sh liberation.sh start', { cwd: '/home/arma3server/' }, (error, stdout, stderr) => {
                         if (error) {
                             console.log(`exec error: ${error}`);
                             return;
@@ -164,7 +164,7 @@ client.on("message", (message) => {
                 if(code == 1){
                     // exec startup script
                     const exec = require('child_process').exec;
-                    var script = exec('sh bottest.sh stop', { cwd: '/home/arma3server/' }, (error, stdout, stderr) => {
+                    var script = exec('sh liberation.sh stop', { cwd: '/home/arma3server/' }, (error, stdout, stderr) => {
                         if (error) {
                             console.log(`exec error: ${error}`);
                             return;
@@ -195,7 +195,7 @@ client.on("message", (message) => {
                 if(code == 1){
                     // exec startup script
                     const exec = require('child_process').exec;
-                    var script = exec('sh bottest.sh restart', { cwd: '/home/arma3server/' }, (error, stdout, stderr) => {
+                    var script = exec('sh liberation.sh restart', { cwd: '/home/arma3server/' }, (error, stdout, stderr) => {
                         if (error) {
                             console.log(`exec error: ${error}`);
                             return;
