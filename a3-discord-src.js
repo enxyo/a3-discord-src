@@ -77,9 +77,24 @@ client.on("message", (message) => {
 
         if (args[0] === 'status') {
             if (args[1] === 'details') {
+                //var s = stdout.slice(stdout.indexOf('arma3server'),stdout.length);
+                //var s1 = s.split(" ");
 
             } else {
-                
+                const exec = require('child_process').exec;
+                var script = exec('ps -fC arma3server', (error, stdout, stderr) => {
+                    if (error) {
+                        message.reply('Server not running.');
+                        return;
+                    }
+
+                    if (stdout.indexOf('arma3server') != -1) {
+                        message.reply('Server running.');
+                    }
+
+                    //console.log(`exec stout: ${stdout}`);
+                    //console.log(`exec sterr: ${stderr}`);
+                });
             }
         }
     }
