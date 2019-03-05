@@ -32,10 +32,11 @@ function serverProcessCheck(details) {
                 deferred.resolve(msg);
             }
             if (stdout.indexOf('arma3server') != -1) {
+                var s = stdout.slice(stdout.indexOf('arma3server'),stdout.length);
+                var s1 = s.split(" ");
                 var msg = 'Server running.';
 
-                //var s = stdout.slice(stdout.indexOf('arma3server'),stdout.length);
-                //var s1 = s.split(" ");
+                //console.log(msg);
                 deferred.resolve(msg);
             }
             //console.log(`exec stout: ${stdout}`);
@@ -53,6 +54,20 @@ function serverProcessCheck(details) {
             if (stdout.indexOf('arma3server') != -1) {
                 var msg = 'Server running.';
                 deferred.resolve(msg);
+            }
+            //console.log(`exec stout: ${stdout}`);
+            //console.log(`exec sterr: ${stderr}`);
+        });
+    }
+
+    if (details == 3) {
+        const exec = require('child_process').exec;
+        var script = exec('ps -fC arma3server', (error, stdout, stderr) => {
+            if (error) {
+                deferred.resolve(0);
+            }
+            if (stdout.indexOf('arma3server') != -1) {
+                deferred.resolve(1);
             }
             //console.log(`exec stout: ${stdout}`);
             //console.log(`exec sterr: ${stderr}`);
@@ -109,16 +124,24 @@ client.on("message", (message) => {
     	    }
 
             // check if server is running
-
-            // exec startup script
-            const exec = require('child_process').exec;
-            var script = exec('sh bottest.sh start', (error, stdout, stderr) => {
-                if (error) {
-                    console.log(`exec error: ${error}`);
-                    return;
+            serverProcessCheck(3)
+            .then(function (code) {
+                console.log(code);
+                if(code == 1){
+                    message.reply('Server is already running!')
                 }
-                console.log(`exec stout: ${stdout}`);
-                console.log(`exec sterr: ${stderr}`);
+                if(code == 0){
+                    // exec startup script
+                    const exec = require('child_process').exec;
+                    var script = exec('sh bottest.sh start', (error, stdout, stderr) => {
+                        if (error) {
+                            console.log(`exec error: ${error}`);
+                            return;
+                        }
+                        console.log(`exec stout: ${stdout}`);
+                        console.log(`exec sterr: ${stderr}`);
+                    });
+                }
             });
 
         }
