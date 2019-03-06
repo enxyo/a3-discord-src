@@ -14,9 +14,6 @@ const token = config.discord.token;
 // Set the prefix
 const prefix = ".";
 
-
-const wl = whitelist.start;
-
 /*******************************************
 ** FUNCTIONS
 *******************************************/
@@ -112,7 +109,7 @@ client.on("message", (message) => {
     //                              restart
     //                              status <details>
     if (command === 'server') {
-        if (args[0] === undefined) {
+        if (args[0] === undefined || (args[0] === 'start' && args[1] === undefined)) {
             message.reply('**Git gud!**\n```\n.server [start] <type>\n        [stop]\n        [restart]\n        [status]\n```');
         }
 
@@ -226,6 +223,40 @@ client.on("message", (message) => {
                 });
             }
         }
+    }
+
+    // whitelist - syntax      .whitelist list <whitelist>
+    //                                    add [whitelist] [@user]
+    //                                    remove [whitelist] [@user]
+    if (command === 'whitelist') {
+        if (args[0] === undefined || (args[0] === 'add' && args[1] === undefined || args[2] === undefined)) {
+            message.reply('**Git gud!**\n```\n.whitelist [list] <whitelist>\n           [add] [@user]\n           [remove] [@user]```');
+        }
+
+        if (args[0] === 'list') {
+            if (args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart') {
+                var wl;
+                switch (args[1]) {
+                    case 'start':
+                        wl = whitelist.path.start;
+                        break;
+                    case 'stop':
+                        wl = whitelist.path.stop;
+                        break;
+                    case 'restart':
+                        wl = whitelist.path.restart;
+                        break;
+                }
+                console.log(wl);
+                message.reply(whitelist);
+                return;
+            }
+        }
+
+        if (args[0] === 'add' && args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart' && args[2] !== undefined ) {
+            message.reply('do stuff')
+        }
+
     }
 });
 
