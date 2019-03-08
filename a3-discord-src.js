@@ -1,7 +1,7 @@
 const config = require('./cfg/config');
 const whitelist = require('./cfg/whitelist');
 
-const q = require('q');
+const Q = require('q');
 
 /*******************************************
 ** DISCORD setup
@@ -19,7 +19,7 @@ const prefix = ".";
 *******************************************/
 
 function serverProcessCheck(details) {
-    var deferred = q.defer();
+    var deferred = Q.defer();
 
     if (details == 1) {
         const exec = require('child_process').exec;
@@ -229,32 +229,28 @@ client.on("message", (message) => {
     //                                    add [whitelist] [@user]
     //                                    remove [whitelist] [@user]
     if (command === 'whitelist') {
-        if (args[0] === undefined || (args[0] === 'add' && args[1] === undefined || args[2] === undefined)) {
+        if (args[0] === undefined || (args[0] === 'add' && (args[1] === undefined || args[2] === undefined))) {
             message.reply('**Git gud!**\n```\n.whitelist [list] <whitelist>\n           [add] [@user]\n           [remove] [@user]```');
         }
 
         if (args[0] === 'list') {
             if (args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart') {
-                var wl;
-                switch (args[1]) {
-                    case 'start':
-                        wl = whitelist.path.start;
-                        break;
-                    case 'stop':
-                        wl = whitelist.path.stop;
-                        break;
-                    case 'restart':
-                        wl = whitelist.path.restart;
-                        break;
-                }
-                console.log(wl);
-                message.reply(whitelist);
+                var whitelistPath = whitelist.whitelistPath(args[1]);
+                message.reply(whitelistPath);
                 return;
             }
+
         }
 
         if (args[0] === 'add' && args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart' && args[2] !== undefined ) {
-            message.reply('do stuff')
+            if (args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart') {
+
+                var msg = whitelist.addToWhitelist(whitelist.selectWhitelist(args[1]),whitelist.whitelistPath(args[1]),args[2]);
+                message.reply(msg);
+            }
+            message.reply('do stuff');
+
+
         }
 
     }
