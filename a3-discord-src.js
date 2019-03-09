@@ -1,5 +1,5 @@
 const config = require('./cfg/config');
-const whitelist = require('./cfg/whitelist');
+const whitelist = require('./whitelist');
 
 const Q = require('q');
 
@@ -244,24 +244,21 @@ client.on("message", (message) => {
 
         if (args[0] === 'add' && args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart' && args[2] !== undefined ) {
             if (args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart') {
-
+                console.log(whitelist.start);
                 var msg = whitelist.addToWhitelist(whitelist.selectWhitelist(args[1]),whitelist.whitelistPath(args[1]),args[2]);
                 message.reply(msg);
             }
-            message.reply('do stuff');
-
-
         }
 
         if (args[0] === 'remove' && args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart' && args[2] !== undefined ) {
             if (args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart') {
-
+                console.log(whitelist.start);
                 var msg = whitelist.removeFromWhitelist(whitelist.selectWhitelist(args[1]),whitelist.whitelistPath(args[1]),args[2]);
                 message.reply(msg);
+                console.log(whitelist.start);
+                whitelist.refreshWhitelist(args[1]);
+                console.log(whitelist.start);
             }
-            message.reply('do stuff');
-
-
         }
 
     }
