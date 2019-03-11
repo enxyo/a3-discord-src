@@ -30,7 +30,11 @@ whitelist.addToWhitelist = function(whitelistSelected, whitelistPath, discordUid
         return msg;
     }
 
-    require('fs').appendFileSync(whitelistPath, discordUid.substring(3,discordUid.length-1), (err) => {
+    var dataArray = whitelistSelected;
+    dataArray.push(discordUid.substring(3,discordUid.length-1));
+
+    const updatedData = dataArray.join['\n'];
+    require('fs').writeFile(whitelistPath, updatedData, (err) => {
         if (err) throw err;
     });
 
