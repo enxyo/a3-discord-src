@@ -9,16 +9,18 @@ whitelist.path.stop = config.whitelist.path.stop;
 whitelist.path.restart = config.whitelist.path.restart;
 
 whitelist.createWhitelist = function (whitelistPath) {
-    var lineReader = require('readline').createInterface({
-        input: require('fs').createReadStream(whitelistPath)
-    });
 
     var array = [];
 
-    lineReader.on('line', function(line) {
+    const lineByLine = require('n-readlines');
+    const liner = new lineByLine(whitelistPath);
+
+    let line;
+
+    while (line = liner.next()) {
         var data = line;
         var newArray = array.push(data);
-    });
+    }
 
     return array;
 }
@@ -31,9 +33,13 @@ whitelist.addToWhitelist = function(whitelistSelected, whitelistPath, discordUid
     }
 
     var dataArray = whitelistSelected;
+    console.log('dataArray: ' + dataArray);
     dataArray.push(discordUid.substring(3,discordUid.length-1));
 
-    const updatedData = dataArray.join['\n'];
+    console.log('dataArray: ' + dataArray);
+
+    const updatedData = dataArray.join('\n');
+    console.log('updatedData ' + updatedData);
     require('fs').writeFile(whitelistPath, updatedData, (err) => {
         if (err) throw err;
     });
@@ -75,13 +81,14 @@ whitelist.selectWhitelist = function(arg) {
     var whitelistSelected = [];
     switch (arg) {
         case 'start':
-            whitelistSelected = whitelist.start;
+            whitelistSelected = whitelist.createWhitelist(whitelist.path.start);
+            console.log('select wl ' + whitelistSelected);
             break;
         case 'stop':
-            whitelistSelected = whitelist.stop;
+            whitelistSelected = whitelist.createWhitelist(whitelist.path.stop);
             break;
         case 'restart':
-            whitelistSelected = whitelist.restart;
+            whitelistSelected = whitelist.createWhitelist(whitelist.path.restart);
             break;
     }
     return whitelistSelected;
@@ -103,28 +110,9 @@ whitelist.whitelistPath = function(arg) {
     return whitelistPath;
 };
 
-whitelist.refreshWhitelist = function(arg) {
-    switch (arg) {
-        case 'start':
-            whitelist.start = whitelist.createWhitelist(whitelist.path.start);
-            break;
-        case 'stop':
-            whitelist.stop = whitelist.createWhitelist(whitelist.path.stop);
-            break;
-        case 'restart':
-            whitelist.restart = whitelist.createWhitelist(whitelist.path.restart);
-            break;
-    }
-    return;
-};
-
 // hardcoded admin whitelist
 whitelist.admin = [
     config.whitelist.admin,   //enxyo
 ];
-
-whitelist.start = whitelist.createWhitelist(whitelist.path.start);
-whitelist.stop = whitelist.createWhitelist(whitelist.path.stop);
-whitelist.restart = whitelist.createWhitelist(whitelist.path.restart);
 
 module.exports = whitelist;
