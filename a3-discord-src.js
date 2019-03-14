@@ -252,6 +252,12 @@ client.on("message", (message) => {
         }
 
         if (args[0] === 'add' && args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart' && args[2] !== undefined ) {
+            // check whitelist
+            if(whitelist.superadmin.includes(message.author.id) !== true) {
+    		          message.reply('Access denied!');
+    		return;
+    	    }
+
             if (args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart') {
                 var msg = whitelist.addToWhitelist(whitelist.selectWhitelist(args[1]),whitelist.whitelistPath(args[1]),args[2]);
                 message.reply(msg);
@@ -259,6 +265,12 @@ client.on("message", (message) => {
         }
 
         if (args[0] === 'remove' && args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart' && args[2] !== undefined ) {
+            // check whitelist
+            if(whitelist.superadmin.includes(message.author.id) !== true) {
+    		          message.reply('Access denied!');
+    		return;
+    	    }
+
             if (args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart') {
 
                 var msg = whitelist.removeFromWhitelist(whitelist.selectWhitelist(args[1]),whitelist.whitelistPath(args[1]),args[2]);

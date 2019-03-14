@@ -19,7 +19,7 @@ whitelist.createWhitelist = function (whitelistPath) {
 
     while (line = liner.next()) {
         var data = line;
-        var newArray = array.push(data);
+        var newArray = array.push(data.toString('utf8'));
     }
 
     return array;
@@ -27,19 +27,15 @@ whitelist.createWhitelist = function (whitelistPath) {
 
 whitelist.addToWhitelist = function(whitelistSelected, whitelistPath, discordUid) {
 
-    if (whitelistSelected.includes(discordUid.substring(3,discordUid.length-1)) === true) {
+    if (whitelistSelected.includes(discordUid.substring(3,discordUid.length-1)) == true) {
         var msg = '```User is already whitelisted.```';
         return msg;
     }
 
     var dataArray = whitelistSelected;
-    console.log('dataArray: ' + dataArray);
     dataArray.push(discordUid.substring(3,discordUid.length-1));
 
-    console.log('dataArray: ' + dataArray);
-
     const updatedData = dataArray.join('\n');
-    console.log('updatedData ' + updatedData);
     require('fs').writeFile(whitelistPath, updatedData, (err) => {
         if (err) throw err;
     });
@@ -82,7 +78,6 @@ whitelist.selectWhitelist = function(arg) {
     switch (arg) {
         case 'start':
             whitelistSelected = whitelist.createWhitelist(whitelist.path.start);
-            console.log('select wl ' + whitelistSelected);
             break;
         case 'stop':
             whitelistSelected = whitelist.createWhitelist(whitelist.path.stop);
@@ -111,8 +106,6 @@ whitelist.whitelistPath = function(arg) {
 };
 
 // hardcoded admin whitelist
-whitelist.admin = [
-    config.whitelist.admin,   //enxyo
-];
+whitelist.superadmin = [config.whitelist.superadmin];
 
 module.exports = whitelist;
