@@ -92,14 +92,15 @@ client.on("message", (message) => {
 	const command = args.shift().toLowerCase();
 
 	if (command  === 'help') {
-		message.channel.send('\n**Available commands**```.server start [type]  (1)\n        stop\n        restart\n        status <details>\n\n(1) available types: liberation```');
+		message.channel.send('\n**Available commands**```.server start [type]  (1)\n        stop\n        restart\n        status <details>\n\n(1) available types: liberation\n\n\n.whitelist [list] <whitelist>\n           [add] [@user]\n           [remove] [@user]```');
 	}
 
     if (command === 'test') {
-        if(whitelist.start.includes(message.author.id) !== true) {
-		message.reply('Access denied!');
-		return;
-	    }
+        // check whitelist
+        if(whitelist.superadmin.includes(message.author.id) != true && whitelist.createWhitelist(config.whitelist.path.start).includes(message.author.id) != true) {
+                message.reply('Access denied!');
+        return;
+        }
 
         message.reply('Access granted!');
     }
@@ -115,10 +116,10 @@ client.on("message", (message) => {
 
         if (args[0] === 'start' && args[1] === 'liberation') {
             // check whitelist
-            if(whitelist.start.includes(message.author.id) !== true) {
-    		          message.reply('Access denied!');
-    		return;
-    	    }
+            if(whitelist.superadmin.includes(message.author.id) != true && whitelist.createWhitelist(config.whitelist.path.start).includes(message.author.id) != true) {
+                    message.reply('Access denied!');
+            return;
+            }
 
             // check if server is running
             serverProcessCheck(3)
@@ -146,10 +147,10 @@ client.on("message", (message) => {
 
         if (args[0] === 'stop') {
             // check whitelist
-            if(whitelist.stop.includes(message.author.id) !== true) {
-    		          message.reply('Access denied!');
-    		return;
-    	    }
+            if(whitelist.superadmin.includes(message.author.id) != true && whitelist.createWhitelist(config.whitelist.path.stop).includes(message.author.id) != true) {
+                    message.reply('Access denied!');
+            return;
+            }
 
             // check if server is running
             serverProcessCheck(3)
@@ -177,10 +178,10 @@ client.on("message", (message) => {
 
         if (args[0] === 'restart') {
             // check whitelist
-            if(whitelist.restart.includes(message.author.id) !== true) {
-    		          message.reply('Access denied!');
-    		return;
-    	    }
+            if(whitelist.superadmin.includes(message.author.id) != true && whitelist.createWhitelist(config.whitelist.path.restart).includes(message.author.id) != true) {
+                    message.reply('Access denied!');
+            return;
+            }
 
             // check if server is running
             serverProcessCheck(3)
@@ -234,13 +235,19 @@ client.on("message", (message) => {
         }
 
         if (args[0] === 'list') {
+            // check whitelist
+            if(whitelist.superadmin.includes(message.author.id) != true && whitelist.createWhitelist(config.whitelist.path.start).includes(message.author.id) != true) {
+    		        message.reply('Access denied!');
+    		return;
+    	    }
+
             if (args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart') {
                 var wl = whitelist.selectWhitelist(args[1]);
                 var msg_start = '**The following people are whitelisted:**';
                 var msg_content = '';
                 var msg_end = '';
                 for (var i = 0; i < wl.length; i++) {
-                    console.log(msg_content);
+                    //console.log(msg_content);
                     msg_content = msg_content.concat(' <@');
                     msg_content = msg_content.concat(wl[i].toString('utf8').slice(0,18));
                     msg_content = msg_content.concat('>');
@@ -253,7 +260,7 @@ client.on("message", (message) => {
 
         if (args[0] === 'add' && args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart' && args[2] !== undefined ) {
             // check whitelist
-            if(whitelist.superadmin.includes(message.author.id) !== true) {
+            if(whitelist.superadmin.includes(message.author.id) != true) {
     		          message.reply('Access denied!');
     		return;
     	    }
@@ -266,7 +273,7 @@ client.on("message", (message) => {
 
         if (args[0] === 'remove' && args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart' && args[2] !== undefined ) {
             // check whitelist
-            if(whitelist.superadmin.includes(message.author.id) !== true) {
+            if(whitelist.superadmin.includes(message.author.id) != true) {
     		          message.reply('Access denied!');
     		return;
     	    }
