@@ -256,6 +256,8 @@ client.on("message", (message) => {
                 return;
             }
 
+            message.reply('**The following whitelists are available:**\n```- start\n- stop\n- restart```');
+
         }
 
         if (args[0] === 'add' && args[1] === 'start' || args[1] === 'stop' || args[1] === 'restart' && args[2] !== undefined ) {
