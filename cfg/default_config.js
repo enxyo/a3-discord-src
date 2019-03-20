@@ -6,6 +6,7 @@ var config = {};
 config.discord = {};
 config.whitelist = {};
 config.whitelist.path = {};
+config.ssh = {};
 
 /*******************************************
 ** DISCORD setup
@@ -19,5 +20,8 @@ config.whitelist.path.stop = '';
 config.whitelist.path.restart = '';
 config.whitelist.admin = '';
 
+// ssh
+config.ssh.host = '';
+config.ssh.user = '';
 
 module.exports = config;
