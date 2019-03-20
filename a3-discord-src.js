@@ -92,7 +92,7 @@ client.on("message", (message) => {
 	const command = args.shift().toLowerCase();
 
 	if (command  === 'help') {
-		message.channel.send('\n**Available commands**```.server start [type]  (1)\n        stop\n        restart\n        status <details>\n\n(1) available types: liberation\n\n\n.whitelist [list] <whitelist>\n           [add] [@user]\n           [remove] [@user]```');
+		message.channel.send('\n**Available commands**```.server start [type]  (1)\n        stop\n        restart\n        status <details>\n\n(1) available types: liberation\n\n\n.whitelist [list] <whitelist>\n           [add] [@user]\n           [remove] [@user]\n\n.hc [start] [number]\n    [stop] [number]\n    [restart] [number]\n    [status] <number>\n\nAvailable headless clients: 1,2,3```');
 	}
 
     if (command === 'test') {
@@ -242,7 +242,21 @@ client.on("message", (message) => {
             return;
             }
             // do stuff
-
+            var cmd_str = 'a3-sl/start_hc.sh hc' + args[1];
+            // list selected hc
+            connect = require('ssh2-connect');
+            exec = require('ssh2-exec');
+            connect({host: 'web1.pledl.org',username: 'steam'}, function(err, ssh){
+                child = exec({cmd: cmd_str, ssh: ssh}, function(err, stdout, stderr){
+                    message.reply('```' + stdout + '```');
+                });
+                child.stdout.on('data', function(data){
+                    console.log(data);
+                });
+                child.on('exit', function(code){
+                    console.log('Exit', code);
+                });
+            });
 
         }
 
@@ -253,7 +267,21 @@ client.on("message", (message) => {
             return;
             }
             // do stuff
-
+            var cmd_str = 'a3-sl/stop_hc.sh hc' + args[1];
+            // list selected hc
+            connect = require('ssh2-connect');
+            exec = require('ssh2-exec');
+            connect({host: 'web1.pledl.org',username: 'steam'}, function(err, ssh){
+                child = exec({cmd: cmd_str, ssh: ssh}, function(err, stdout, stderr){
+                    message.reply('```' + stdout + '```');
+                });
+                child.stdout.on('data', function(data){
+                    console.log(data);
+                });
+                child.on('exit', function(code){
+                    console.log('Exit', code);
+                });
+            });
 
         }
 
@@ -264,15 +292,26 @@ client.on("message", (message) => {
             return;
             }
             // do stuff
-
+            var cmd_str = 'a3-sl/restart_hc.sh hc' + args[1];
+            // list selected hc
+            connect = require('ssh2-connect');
+            exec = require('ssh2-exec');
+            connect({host: 'web1.pledl.org',username: 'steam'}, function(err, ssh){
+                child = exec({cmd: cmd_str, ssh: ssh}, function(err, stdout, stderr){
+                    message.reply('```' + stdout + '```');
+                });
+                child.stdout.on('data', function(data){
+                    console.log(data);
+                });
+                child.on('exit', function(code){
+                    console.log('Exit', code);
+                });
+            });
 
         }
 
-        if (args[0] === 'status' && (0 < args[1] && args[1] < 4)) {
-            // list selected hc
+        if (args[0] === 'status') {
 
-
-        } else {
             // list all hc
             connect = require('ssh2-connect');
             exec = require('ssh2-exec');
@@ -281,7 +320,7 @@ client.on("message", (message) => {
                     message.reply('```' + stdout + '```');
                 });
                 child.stdout.on('data', function(data){
-                        //console.log(data);
+                    //console.log(data);
                 });
                 child.on('exit', function(code){
                     //console.log('Exit', code);
