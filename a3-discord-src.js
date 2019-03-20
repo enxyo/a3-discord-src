@@ -92,7 +92,7 @@ client.on("message", (message) => {
 	const command = args.shift().toLowerCase();
 
 	if (command  === 'help') {
-		message.channel.send('\n**Available commands**```.server start [type]  (1)\n        stop\n        restart\n        status <details>\n\n(1) available types: liberation\n\n\n.whitelist [list] <whitelist>\n           [add] [@user]\n           [remove] [@user]\n\n.hc [start] [number]\n    [stop] [number]\n    [restart] [number]\n    [status] <number>\n\nAvailable headless clients: 1,2,3```');
+		message.channel.send('\n**Available commands**```.server start [type]  (1)\n        stop\n        restart\n        status <details>\n\n(1) available types: liberation\n\n\n.whitelist [list] <whitelist>\n           [add] [@user]\n           [remove] [@user]\n\n.hc [start] [number]\n    [stop] [number]\n    [restart] [number]\n    [status]\n\nAvailable headless clients: 1,2,3```');
 	}
 
     if (command === 'test') {
@@ -232,7 +232,7 @@ client.on("message", (message) => {
     //                      status <number>
     if (command === 'hc') {
         if (args[0] === undefined || (args[0] === 'start' && args[1] === undefined) || (args[0] === 'stop' && args[1] === undefined) || (args[0] === 'restart' && args[1] === undefined)) {
-            message.reply('**Git gud!**\n```\n.hc [start] [number]\n    [stop] [number]\n    [restart] [number]\n    [status] <number>\n```');
+            message.reply('**Git gud!**\n```\n.hc [start] [number]\n    [stop] [number]\n    [restart] [number]\n    [status]\n```');
         }
 
         if (args[0] === 'start' && (0 < args[1] && args[1] < 4)) {
