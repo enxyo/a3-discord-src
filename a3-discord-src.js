@@ -274,19 +274,19 @@ client.on("message", (message) => {
 
         } else {
             // list all hc
-            
-            /*
-            const exec = require('child_process').exec;
-            var script = exec("ssh@web1.pledl.org 'a3-sl/status_hc.sh'", { shell : '/bin/bash' }, (error, stdout, stderr) => {
-                if (error) {
-                    console.log(`exec error: ${error}`);
-                    return;
-                }
-                console.log(`exec stout: ${stdout}`);
-                console.log(`exec sterr: ${stderr}`);
-                message.reply('```' + stdout + '```')
+            connect = require('ssh2-connect');
+            exec = require('ssh2-exec');
+            connect({host: 'web1.pledl.org',username: 'steam'}, function(err, ssh){
+                child = exec({cmd: 'a3-sl/status_hc.sh all', ssh: ssh}, function(err, stdout, stderr){
+                    message.reply('```' + stdout + '```');
+                });
+                child.stdout.on('data', function(data){
+                        //console.log(data);
+                });
+                child.on('exit', function(code){
+                    //console.log('Exit', code);
+                });
             });
-            */
         }
     }
 
