@@ -246,7 +246,7 @@ client.on("message", (message) => {
             // list selected hc
             connect = require('ssh2-connect');
             exec = require('ssh2-exec');
-            connect({host: 'web1.pledl.org',username: 'steam'}, function(err, ssh){
+            connect({host: config.ssh.host,username: config.ssh.user}, function(err, ssh){
                 child = exec({cmd: cmd_str, ssh: ssh}, function(err, stdout, stderr){
                     message.reply('```' + stdout + '```');
                 });
@@ -271,7 +271,7 @@ client.on("message", (message) => {
             // list selected hc
             connect = require('ssh2-connect');
             exec = require('ssh2-exec');
-            connect({host: 'web1.pledl.org',username: 'steam'}, function(err, ssh){
+            connect({host: config.ssh.host,username: config.ssh.user}, function(err, ssh){
                 child = exec({cmd: cmd_str, ssh: ssh}, function(err, stdout, stderr){
                     message.reply('```' + stdout + '```');
                 });
@@ -296,7 +296,7 @@ client.on("message", (message) => {
             // list selected hc
             connect = require('ssh2-connect');
             exec = require('ssh2-exec');
-            connect({host: 'web1.pledl.org',username: 'steam'}, function(err, ssh){
+            connect({host: config.ssh.host,username: config.ssh.user}, function(err, ssh){
                 child = exec({cmd: cmd_str, ssh: ssh}, function(err, stdout, stderr){
                     message.reply('```' + stdout + '```');
                 });
@@ -315,7 +315,7 @@ client.on("message", (message) => {
             // list all hc
             connect = require('ssh2-connect');
             exec = require('ssh2-exec');
-            connect({host: 'web1.pledl.org',username: 'steam'}, function(err, ssh){
+            connect({host: config.ssh.host,username: config.ssh.user}, function(err, ssh){
                 child = exec({cmd: 'a3-sl/status_hc.sh all', ssh: ssh}, function(err, stdout, stderr){
                     message.reply('```' + stdout + '```');
                 });
