@@ -226,6 +226,70 @@ client.on("message", (message) => {
         }
     }
 
+    // hc - syntax      .hc start [number]
+    //                      stop [number]
+    //                      restart [number]
+    //                      status <number>
+    if (command === 'hc') {
+        if (args[0] === undefined || (args[0] === 'start' && args[1] === undefined) || (args[0] === 'stop' && args[1] === undefined) || (args[0] === 'restart' && args[1] === undefined)) {
+            message.reply('**Git gud!**\n```\n.hc [start] [number]\n    [stop] [number]\n    [restart] [number]\n    [status] <number>\n```');
+        }
+
+        if (args[0] === 'start' && (0 < args[1] && args[1] < 4)) {
+            // check whitelist
+            if(whitelist.superadmin.includes(message.author.id) != true && whitelist.createWhitelist(config.whitelist.path.start).includes(message.author.id) != true) {
+                    message.reply('Access denied!');
+            return;
+            }
+            // do stuff
+
+
+        }
+
+        if (args[0] === 'stop' && (0 < args[1] && args[1] < 4)) {
+            // check whitelist
+            if(whitelist.superadmin.includes(message.author.id) != true && whitelist.createWhitelist(config.whitelist.path.stop).includes(message.author.id) != true) {
+                    message.reply('Access denied!');
+            return;
+            }
+            // do stuff
+
+
+        }
+
+        if (args[0] === 'restart' && (0 < args[1] && args[1] < 4)) {
+            // check whitelist
+            if(whitelist.superadmin.includes(message.author.id) != true && whitelist.createWhitelist(config.whitelist.path.restart).includes(message.author.id) != true) {
+                    message.reply('Access denied!');
+            return;
+            }
+            // do stuff
+
+
+        }
+
+        if (args[0] === 'status' && (0 < args[1] && args[1] < 4)) {
+            // list selected hc
+
+
+        } else {
+            // list all hc
+            
+            /*
+            const exec = require('child_process').exec;
+            var script = exec("ssh@web1.pledl.org 'a3-sl/status_hc.sh'", { shell : '/bin/bash' }, (error, stdout, stderr) => {
+                if (error) {
+                    console.log(`exec error: ${error}`);
+                    return;
+                }
+                console.log(`exec stout: ${stdout}`);
+                console.log(`exec sterr: ${stderr}`);
+                message.reply('```' + stdout + '```')
+            });
+            */
+        }
+    }
+
     // whitelist - syntax      .whitelist list <whitelist>
     //                                    add [whitelist] [@user]
     //                                    remove [whitelist] [@user]
